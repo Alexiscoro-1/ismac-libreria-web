@@ -56,8 +56,9 @@ public class LibroController {
 			modelMap.addAttribute("autores", autorDAO.findALL());
 			modelMap.addAttribute("categorias", categoriaDAO.findALL());
 			
-			if(opcion ==1) return"add-libros";
-			else return"del_libro";
+			if(opcion ==1) 
+				return"libros-add";
+			else return"libros-del";
 		}
 	
 		@PostMapping("/add")
@@ -97,13 +98,13 @@ public class LibroController {
 	}
 	
 
-	return "redirect:/libros/libros-listar";
+	return "redirect:/libros/findAll";
 
 }
 	@GetMapping("/dell")
 	public String del(@RequestParam("idLibro") @Nullable Integer idLibro) {
 		libroDAO.del(idLibro);
-		return "redirect:/libros/libros-listar";
+		return "redirect:/libros/findAll";
 	}
 }
 		
