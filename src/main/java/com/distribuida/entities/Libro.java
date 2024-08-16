@@ -27,8 +27,8 @@ public class Libro {
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		@Column(name = "id_libro")
 		private int idLibro;
-		@Column(name = "titulo")
-		private String	titulo;
+		@Column(nullable = false)
+	    private String titulo;
 		@Column(name = "editorial")
 		private String editorial;
 		@Column(name = "num_paginas")
@@ -70,7 +70,7 @@ public class Libro {
 		
 		public Libro() {}
 			
-			public Libro(int idLibro, String titutlo, String editorial, int numPaginas, String edicion, String idioma,
+			public Libro(int idLibro, String titulo, String editorial, int numPaginas, String edicion, String idioma,
 				Date fechaPublicacion, String descripcion, String tipoPasta, String iSBN, int numEjemplares,
 				String portada, String presentacion, double precio) {
 			
@@ -113,8 +113,8 @@ public class Libro {
 
 
 
-		public void setTitulo(String titutlo) {
-			this.titulo = titutlo;
+		public void setTitulo(String titulo) {
+			this.titulo = titulo;
 		}
 
 
@@ -287,7 +287,7 @@ public class Libro {
 		
 		@Override
 		public String toString() {
-		return "Libro [idLibro=" + idLibro + ", titutlo=" + titulo + ", editorial=" + editorial + ", numPaginas="
+		return "Libro [idLibro=" + idLibro + ", titulo=" + titulo + ", editorial=" + editorial + ", numPaginas="
 		+ numPaginas + ", edicion=" + edicion + ", idioma=" + idioma + ", fechaPublicacion="
 		+ fechaPublicacion + ", descripcion=" + descripcion + ", tipoPpasta=" + tipoPasta + ", ISBN="
 		+ ISBN + ", numEjemplares=" + numEjemplares + ", portada=" + portada + ", presentacion="

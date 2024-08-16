@@ -61,9 +61,10 @@
 						<td> ${item.categoria.categoria}</td>
 						<td> ${item.autor.nombre} ${item.autor.apellido}</td>
 						<td> 
-							<button onclick="window.location.href='/ismac-libreria-web/libro/findOne?idLibro=${item.idLibro}&opcion=1'; return false;">						
- 							   Actualizar																									
-						</button>
+						
+							<button onclick="window.location.href='${pageContext.request.contextPath}/libro/findOne?idsucursales=${libro.idsucursales}&opcion=1'; return false;">
+                        Actualizar
+                        </button>
 						<button onclick="window.location.href='/ismac-libreria-web/libro/dell?idLibro=${item.idLibro}'; return false;">						
 						    Eliminar																									
 						</button>

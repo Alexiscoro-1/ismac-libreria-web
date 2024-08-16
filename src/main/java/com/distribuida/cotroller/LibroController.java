@@ -1,10 +1,14 @@
 package com.distribuida.cotroller;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -34,12 +38,12 @@ public class LibroController {
 	@Qualifier("autorDAOImpl")
 	private AutorDAO autorDAO ;
 	
-	@GetMapping("/findAll")
 	
+@GetMapping("/findAll")
 	private String findAll(ModelMap modelMap) {
-		List<Libro> libros=libroDAO.findALL();
-		modelMap.addAttribute("libros",libros);
-		return "libros-listar";
+	    List<Libro> libros = libroDAO.findALL();
+	    modelMap.addAttribute("libros", libros);
+	    return "libros-listar";
 	}
 	
 	@GetMapping("/findOne")
@@ -47,32 +51,33 @@ public class LibroController {
 						  ,@RequestParam("opcion")@Nullable Integer opcion
 						  ,ModelMap modelMap
 						  ) {
-		if(idLibro !=null) {
-			Libro libro = libroDAO.findOne(idLibro);
-			modelMap.addAttribute("libro", libro);	
+	if(idLibro !=null) {
+		Libro libro = libroDAO.findOne(idLibro);
+		modelMap.addAttribute("libro", libro);	
 				
 		}		
 			
-			modelMap.addAttribute("autores", autorDAO.findALL());
-			modelMap.addAttribute("categorias", categoriaDAO.findALL());
-			
-			if(opcion ==1) 
-				return"libros-add";
-			else return"libros-del";
+		modelMap.addAttribute("autores", autorDAO.findALL());
+		modelMap.addAttribute("categorias", categoriaDAO.findALL());
+		
+	if(opcion ==1) 
+			return"libros-add";
+		else 
+			return"libros-del";
 		}
 	
-		@PostMapping("/add")
+@PostMapping("/add")
 		private String add(@RequestParam ("idLibro") @Nullable Integer idLibro
-				,@RequestParam ("titulo") @Nullable String titulo
+				,@RequestParam ("titulo")  String titulo
 				,@RequestParam ("editorial") @Nullable String editorial
 				,@RequestParam ("numPaginas") @Nullable Integer numPaginas
 				,@RequestParam ("edicion") @Nullable String edicion
 				,@RequestParam ("idioma") @Nullable String idioma
-				,@RequestParam ("fechaPublicacion") @Nullable Date fechaPublicacion
+				,@RequestParam("fechaPublicacion")@Nullable @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaPublicacion
 				,@RequestParam ("descripcion") @Nullable String descripcion
 				,@RequestParam ("tipoPasta") @Nullable String tipoPasta
 				,@RequestParam ("ISBN") @Nullable String ISBN
-				,@RequestParam ("numEjemplares") @Nullable Integer numEjemplares
+		        ,@RequestParam(value = "numEjemplares", defaultValue = "0") Integer numEjemplares
 				,@RequestParam ("portada") @Nullable String portada
 				,@RequestParam ("presentacion") @Nullable String presentacion
 				,@RequestParam ("precio") @Nullable Double precio
@@ -80,6 +85,12 @@ public class LibroController {
 				,@RequestParam ("id_autor") @Nullable Integer id_autor
 				,ModelMap modelMap
 				) {
+
+	if (titulo == null || titulo.isEmpty()) {
+        // Manejar el caso donde el título es null o vacío
+        modelMap.addAttribute("error", "El título es obligatorio.");
+        return "libros-add"; // Regresar al formulario con un mensaje de error
+    }
 
 	if(idLibro ==null) {
 		Libro libro = new Libro(0,titulo, editorial, numPaginas, edicion, idioma, fechaPublicacion,  descripcion, tipoPasta, ISBN, numEjemplares, portada, presentacion, precio);
@@ -92,30 +103,16 @@ public class LibroController {
 		Libro libro = new Libro(idLibro,titulo, editorial, numPaginas, edicion, idioma, fechaPublicacion,  descripcion, tipoPasta, ISBN, numEjemplares, portada, presentacion, precio);
 		libro.setCategoria(categoriaDAO.findOne(id_categoria));
 		libro.setAutor(autorDAO.findOne(id_autor));
-		
 		libroDAO.up(libro);
 		
 	}
 	
-
-	return "redirect:/libros/findAll";
-
+		return "redirect:/libro/findAll";
 }
-	@GetMapping("/dell")
+@GetMapping("/dell")
 	public String del(@RequestParam("idLibro") @Nullable Integer idLibro) {
 		libroDAO.del(idLibro);
-		return "redirect:/libros/findAll";
+		return "redirect:/libro/findAll";
 	}
 }
 		
-
-
-
-
-
-
-
-
-
-
-
